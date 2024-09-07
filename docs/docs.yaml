@@ -1,0 +1,262 @@
+tags: 
+  - name: Books
+paths:
+  /api/admin/books:
+    get:
+      summary: Login user
+      tags: [Books]
+      parameters:
+        - name: limit
+          type: integer
+          in: query
+        - name: offset
+          type: integer
+          in: query
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                [
+                  {
+                    "id": 2,
+                    "bookId": "201",
+                    "name": "Ikinji kitap",
+                    "year": 2019,
+                    "genre": "Roman",
+                    "stock": 2,
+                    "inLibrary": 2,
+                    "outLibrary": 0,
+                    "createdAt": "2024-03-04T10:35:35.373Z",
+                    "updatedAt": "2024-03-04T10:35:35.373Z"
+                  },
+                  {
+                    "id": 1,
+                    "bookId": "10",
+                    "name": "Test kitap",
+                    "year": 2019,
+                    "genre": "Fantasy",
+                    "stock": 100,
+                    "inLibrary": 99,
+                    "outLibrary": 1,
+                    "createdAt": "2024-03-04T10:35:35.373Z",
+                    "updatedAt": "2024-03-04T11:26:42.928Z"
+                  }
+                ]
+  /api/admin/books/upload-excel:
+    post:
+      summary: Upload excel
+      tags: [Books]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Excel file to upload.  
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                [
+                  {
+                    "name": "Test kitap",
+                    "genre": "Fantasy",
+                    "stock": 100,
+                    "id": 10,
+                    "year": 2014
+                  },
+                  {
+                    "name": "Ikinji kitap",
+                    "genre": "Roman",
+                    "stock": 2,
+                    "id": 201,
+                    "year": 2048
+                  }
+                ]
+  /api/admin/books/{id}:
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        description: Unique identifier for the place.
+      tags: [Books]
+      summary: Get one place
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                    "id": 1,
+                    "bookId": "10",
+                    "name": "Test kitap",
+                    "genre": "Fantasy",
+                    "stock": 100,
+                    "inLibrary": 98,
+                    "outLibrary": 2,
+                    "createdAt": "2024-03-04T10:35:35.373Z",
+                    "updatedAt": "2024-03-04T12:13:55.957Z",
+                    "received_books": [
+                        {
+                            "id": 1,
+                            "studentId": "184220",
+                            "name": "Rustam",
+                            "faculty": "IT",
+                            "createdAt": "2024-03-04T10:35:40.315Z",
+                            "updatedAt": "2024-03-04T10:35:40.315Z",
+                            "Givenbooks": {
+                                "studentId": 1,
+                                "bookId": 1,
+                                "createdAt": "2024-03-04T12:13:55.949Z",
+                                "updatedAt": "2024-03-04T12:13:55.949Z"
+                            }
+                        }
+                    ]
+                }
+  /api/admin/books/give:
+    post:
+      tags: [Books]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bookId:
+                  type: string
+                  description: Id of book
+                  example: 10
+                studentId:
+                  type: string
+                  description: Id of student
+                  example: "184220"
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                {
+                  "bookId": 1,
+                  "studentId": 1,
+                  "updatedAt": "2024-03-04T12:33:11.426Z",
+                  "createdAt": "2024-03-04T12:33:11.426Z"
+                }
+  /api/admin/books/receive:
+    post:
+      tags: [Books]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bookId:
+                  type: string
+                  description: Id of book
+                  example: 10
+                studentId:
+                  type: string
+                  description: Id of student
+                  example: "184220"
+      responses:
+        200:
+          content:
+            application/json:
+              example: Sucess
+  /api/admin/students/upload-excel:
+    post:
+      summary: Upload excel
+      tags: [Students]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Excel file to upload.
+  /api/admin/students:
+    get:
+      summary: Get all students
+      tags: [Students]
+      parameters:
+        - name: limit
+          in: query
+          type: integer
+        - name: offset
+          in: query
+          type: integer
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                [
+                  {
+                      "id": 1,
+                      "studentId": "184220",
+                      "name": "Rustam",
+                      "faculty": "IT",
+                      "createdAt": "2024-03-04T10:35:40.315Z",
+                      "updatedAt": "2024-03-04T10:35:40.315Z"
+                  },
+                  {
+                      "id": 2,
+                      "studentId": "204220",
+                      "name": "Babageldi",
+                      "faculty": "Math",
+                      "createdAt": "2024-03-04T10:35:40.315Z",
+                      "updatedAt": "2024-03-04T10:35:40.315Z"
+                  }
+                ]
+  /api/admin/actions:
+    get:
+      summary: Get all actions
+      tags: [Actions]
+      parameters:
+        - name: limit
+          in: query
+          type: integer
+        - name: offset
+          in: query
+          type: integer
+      responses:
+        200:
+          content:
+            application/json:
+              example: 
+                [
+                  {
+                      "id": 3,
+                      "receivedDate": null,
+                      "givenDate": "4.2.2024",
+                      "studentId": 184220,
+                      "bookId": 10,
+                      "bookName": null,
+                      "createdAt": "2024-03-04T12:31:34.650Z",
+                      "updatedAt": "2024-03-04T12:31:34.650Z"
+                  },
+                  {
+                      "id": 4,
+                      "receivedDate": null,
+                      "givenDate": "4.2.2024",
+                      "studentId": 184220,
+                      "bookId": 10,
+                      "bookName": null,
+                      "createdAt": "2024-03-04T12:33:11.435Z",
+                      "updatedAt": "2024-03-04T12:33:11.435Z"
+                  }
+                ]
